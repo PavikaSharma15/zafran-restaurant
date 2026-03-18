@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useCart } from '../context/CartContext'
 import './Menu.css'
 
 const menuData = {
@@ -24,6 +25,7 @@ const menuData = {
 
 function Menu() {
   const [activeTab, setActiveTab] = useState('Indian')
+  const { addToCart } = useCart()
 
   return (
     <div className="menu-page">
@@ -57,7 +59,17 @@ function Menu() {
                 <span className="menu-item-price">{item.price}</span>
               </div>
               <p className="menu-item-desc">{item.desc}</p>
-              <button className="menu-add-btn">Add to Order</button>
+              <button
+                className="menu-add-btn"
+                onClick={() => addToCart({
+                  name: item.name,
+                  price: parseInt(item.price.replace(/[₹,]/g, '')),
+                  cuisine: activeTab,
+                  img: item.img
+                })}
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}

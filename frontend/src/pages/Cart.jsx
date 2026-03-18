@@ -1,23 +1,13 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useCart } from '/Users/pavikasharma/Documents/Restaurant/frontend/src/context/CartContext.jsx'
 import './Cart.css'
 
-const sampleItems = [
-  { id: 1, name: 'Dal Makhani', cuisine: 'Indian', price: 850, qty: 1, img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&q=80' },
-  { id: 2, name: 'Truffle Risotto', cuisine: 'Continental', price: 1600, qty: 1, img: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=300&q=80' },
-  { id: 3, name: 'Mushroom Truffle Tart', cuisine: 'Vegetarian', price: 1100, qty: 2, img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&q=80' },
-]
-
 function Cart() {
-  const [items, setItems] = useState(sampleItems)
+  const { cartItems, updateQty, clearCart } = useCart()
   const [ordered, setOrdered] = useState(false)
 
-  const updateQty = (id, delta) => {
-    setItems(items.map(item =>
-      item.id === id ? { ...item, qty: Math.max(0, item.qty + delta) } : item
-    ).filter(item => item.qty > 0))
-  }
-
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0)
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0)
   const tax = Math.round(subtotal * 0.05)
   const total = subtotal + tax
 
@@ -26,13 +16,14 @@ function Cart() {
       const res = await fetch('https://zafran-backend.onrender.com/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, total })
+        body: JSON.stringify({ items: cartItems, total })
       })
       const data = await res.json()
       if (!res.ok) { alert(data.message); return }
+      clearCart()
       setOrdered(true)
     } catch (err) {
-      alert('Something went wrong. Is the backend running?')
+      alert('Something went wrong.')
     }
   }
 
@@ -48,8 +39,8 @@ function Cart() {
             Estimated time: <span style={{ color: 'var(--gold)' }}>35–45 minutes</span>
           </p>
           <div className="gold-line center" />
-          <button className="btn-outline-white" onClick={() => { setOrdered(false); setItems(sampleItems) }}>
-            Back to Cart
+          <button className="btn-outline-white" onClick={() => setOrdered(false)}>
+            Back to Menu
           </button>
         </div>
       </div>
@@ -64,15 +55,15 @@ function Cart() {
         <div className="gold-line center" />
       </div>
 
-      {items.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="empty-wrap">
           <p className="empty-text">Your cart is empty</p>
-          <a href="/menu" className="btn-gold">Browse Menu</a>
+          <Link to="/menu" className="btn-gold">Browse Menu</Link>
         </div>
       ) : (
         <div className="cart-layout">
           <div className="cart-items">
-            {items.map(item => (
+            {cartItems.map(item => (
               <div key={item.id} className="cart-card">
                 <img src={item.img} alt={item.name} className="cart-card-img" />
                 <div className="cart-card-info">
@@ -107,7 +98,7 @@ function Cart() {
               <span className="summary-total-value">₹{total.toLocaleString()}</span>
             </div>
             <button className="place-order-btn" onClick={handleOrder}>Place Order</button>
-            <a href="/menu" className="continue-link">← Continue Browsing</a>
+            <Link to="/menu" className="continue-link">← Continue Browsing</Link>
           </div>
         </div>
       )}

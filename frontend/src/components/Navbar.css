@@ -94,3 +94,35 @@
       letter-spacing: 8px;
     }
   }
+  .cart-nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .cart-badge {
+    background-color: var(--gold);
+    color: var(--black);
+    font-size: 10px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Raleway', sans-serif;
+  }
+  
+  .navbar-mobile-right {
+    display: none;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-mobile-right {
+      display: flex;
+    }
+  }
