@@ -24,3 +24,22 @@ h1, h2, h3 {
 }
 
 a { text-decoration: none; color: inherit; }
+/* ===== RESPONSIVE / MOBILE ===== */
+@media (max-width: 768px) {
+
+  /* Navbar */
+  nav {
+    padding: 16px 20px !important;
+  }
+
+  /* Home Hero */
+  h1[style*="120px"] {
+    font-size: 52px !important;
+    letter-spacing: 10px !important;
+  }
+
+  /* Dish Grid */
+  div[style*="gridTemplateColumns: 'repeat(3"] {
+    grid-template-columns: 1fr !important;
+  }
+}
