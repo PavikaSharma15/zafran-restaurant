@@ -16,7 +16,7 @@ function Reservations() {
       return
     }
     try {
-      const res = await fetch('http://localhost:5000/api/reservations', {
+      const res = await fetch('https://zafran-backend.onrender.com/api/reservations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)

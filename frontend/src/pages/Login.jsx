@@ -13,8 +13,8 @@ function Login() {
     }
     try {
       const url = isLogin
-        ? 'http://localhost:5000/api/auth/login'
-        : 'http://localhost:5000/api/auth/register'
+        ? 'https://zafran-backend.onrender.com/api/auth/login'
+        : 'https://zafran-backend.onrender.com/api/auth/register'
   
       const res = await fetch(url, {
         method: 'POST',
